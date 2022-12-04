@@ -9,6 +9,12 @@ import {likesReducer} from "./redux/reducer/likes-reducer";
 import AppNavbar from "./components/Navbar"
 import Home from "./screens/Home";
 import axios from "axios";
+import AppContext from "./context";
+import { BrowserRouter } from "react-router-dom";
+import ErrorPage from "./components/Error";
+import {Routes, Route} from "react-router";
+import Login from "./screens/Login";
+import Register from "./screens/Register";
 
 const store = configureStore({
   reducer: {
@@ -21,10 +27,16 @@ const store = configureStore({
 function App() {
 
   return (
-      <div>
-          <AppNavbar />
-          <Home />
-      </div>
+      <BrowserRouter>
+        <AppContext>
+            <AppNavbar />
+                <Routes>
+                    <Route index path="/home" element={<Home />}/>
+                    <Route path="/login" element={<Login />}/>
+                    <Route path="/register" element={<Register />}/>
+                </Routes>
+        </AppContext>
+      </BrowserRouter>
   );
 }
 export default App;

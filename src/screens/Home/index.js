@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import MyJumbotron from "../../components/Jumbotron";
 import axios from "axios";
 import MealsContainer from "../../components/MealsContainer";
+import {MyContext} from "../../context";
 
 function Home() {
-    const [meals, setMeals] = useState([]);
+    const {meals, setMeals} = useContext(MyContext);
     useEffect(()=>{
         axios.get('https://www.themealdb.com/api/json/v1/1/search.php?f=a')
             .then(({ data }) => setMeals(data.meals))

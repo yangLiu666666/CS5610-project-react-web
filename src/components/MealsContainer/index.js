@@ -6,7 +6,7 @@ function MealsContainer({meals}) {
     return (
         <div className="meals-container">
             {meals.map((meal) => (
-                <MealCard {...meal}/>
+                <MealCard key={meal.idMeal} {...meal}/>
             ))}
         </div>
     );
