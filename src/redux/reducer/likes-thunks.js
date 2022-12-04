@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {userLikesMovie} from "./likes-service";
+import {userLikesMovie} from "../../services/likes-service";
 
 export const userLikesMovieThunk = createAsyncThunk(
     'userLikesMovie',

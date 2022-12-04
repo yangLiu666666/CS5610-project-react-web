@@ -1,5 +1,4 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {findMovieBySearchTerm} from "./omdb-service";
 import {findMovieBySearchTermThunk} from "./omdb-thunks";
 
 const initialState = {

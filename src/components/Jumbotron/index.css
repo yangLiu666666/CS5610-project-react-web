@@ -1,0 +1,22 @@
+.jumbotron {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.3)),
+    url("https://png.pngtree.com/background/20210706/original/pngtree-food-background-picture-image_83391.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.jumbotron h1, h2 {
+    color: white;
+}
+
+.button-input {
+    width: 60%;
+    margin-top: 30px;
+}

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const SEARCH_URL = 'https://omdbapi.com/?apikey=852159f0&s='
+const SEARCH_URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s='
 
 
 export const findMovieBySearchTerm = async (term) => {
