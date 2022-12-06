@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Container, Nav, Navbar} from "react-bootstrap";
 import { LinkContainer } from 'react-router-bootstrap';
+import {MyContext} from "../../context";
 
 function AppNavbar() {
+    const {user} = useContext(MyContext)
     return (
         <div>
             <Navbar bg="light" expand="lg">
@@ -10,6 +12,7 @@ function AppNavbar() {
                     <Navbar.Brand href="/home">Meals</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
+                        {!user && (
                         <Nav className="me-auto">
                             <LinkContainer to="/home">
                                 <Nav.Link>Home</Nav.Link>
@@ -20,9 +23,8 @@ function AppNavbar() {
                             <LinkContainer to="/register">
                                 <Nav.Link>Register</Nav.Link>
                             </LinkContainer>
-                            {/*<Nav.Link href="/login">Login</Nav.Link>*/}
-                            {/*<Nav.Link href="/register">Register</Nav.Link>*/}
                         </Nav>
+                        )}
                     </Navbar.Collapse>
                 </Container>
             </Navbar>

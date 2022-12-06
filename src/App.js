@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useContext, useEffect} from "react";
 import {configureStore} from "@reduxjs/toolkit";
 import {Provider} from "react-redux";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,9 +9,9 @@ import {likesReducer} from "./redux/reducer/likes-reducer";
 import AppNavbar from "./components/Navbar"
 import Home from "./screens/Home";
 import axios from "axios";
-import AppContext from "./context";
+import AppContext, {MyContext} from "./context";
 import { BrowserRouter } from "react-router-dom";
-import ErrorPage from "./components/Error";
+import ErrorPage from "./components/ErrorPage";
 import {Routes, Route} from "react-router";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
@@ -25,17 +25,24 @@ const store = configureStore({
 })
 
 function App() {
+    const {user} = useContext(MyContext);
+    useEffect(()=>{
+        axios.post('/auto-login');
+
+    }, [])
 
   return (
       <BrowserRouter>
-        <AppContext>
             <AppNavbar />
                 <Routes>
                     <Route index path="/home" element={<Home />}/>
+                    {!user && (
+                    <>
                     <Route path="/login" element={<Login />}/>
                     <Route path="/register" element={<Register />}/>
+                    </>
+                    )}
                 </Routes>
-        </AppContext>
       </BrowserRouter>
   );
 }
