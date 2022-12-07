@@ -1,9 +1,12 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import React, {useContext, useState} from 'react';
-import axios from "axios";
+// import axios from "axios";
 import {MyContext} from "../../context";
+import {useNavigate} from "react-router-dom";
+import httpClient from "../../Axios";
 function Register() {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const {setUser} = useContext(MyContext);
@@ -13,10 +16,11 @@ function Register() {
         if (!email || !password) {
             return alert('Please filled out the fields');
         }
-        axios.post('http://localhost:4000/users', {email, password})
+        httpClient.post('/users', {email, password})
             .then(({data}) => {
                 setUser(data);
                 localStorage.setItem('token', data.token);
+                navigate("/");
             })
             .catch((error)=>console.log(error));
     }
@@ -45,9 +49,6 @@ function Register() {
                     value={password}
                     required
                 />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" label="Check me out" />
             </Form.Group>
             <Button variant="primary" type="submit">
                 Submit

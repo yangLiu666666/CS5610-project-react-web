@@ -1,9 +1,12 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import React, {useContext, useState} from "react";
-import axios from "axios";
+// import axios from "axios";
 import {MyContext} from "../../context";
+import {useNavigate} from "react-router-dom";
+import httpClient from "../../Axios";
 function Login() {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const {setUser} = useContext(MyContext);
@@ -13,10 +16,18 @@ function Login() {
         if (!email || !password) {
             return alert('Please filled out the fields');
         }
-        axios.post('http://localhost:4000/login', {email, password})
+        // axios.post('http://localhost:4000/login', {email, password})
+        //     .then(({data}) => {
+        //         localStorage.setItem('token', data.token);
+        //         setUser(data);
+        //         navigate("/");
+        //     })
+        //     .catch((error)=>console.log(error));
+        httpClient.post('/login', {email, password})
             .then(({data}) => {
                 localStorage.setItem('token', data.token);
                 setUser(data);
+                navigate("/");
             })
             .catch((error)=>console.log(error));
     }

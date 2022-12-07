@@ -7,9 +7,13 @@ import {MyContext} from "../../context";
 function Home() {
     const {meals, setMeals} = useContext(MyContext);
     useEffect(()=>{
-        axios.get('https://www.themealdb.com/api/json/v1/1/search.php?f=a')
-            .then(({ data }) => setMeals(data.meals))
-            .catch((error)=>console.log(error));
+        // axios.get('https://www.themealdb.com/api/json/v1/1/search.php?f=b')
+        //     .then(({ data }) => setMeals(data.meals))
+        //     .catch((error)=>console.log(error));
+        fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=b')
+            .then((res) => res.json())
+            .then((data) => {setMeals(data.meals)})
+            .catch((error) => console.log(error));
 
     },[])
     return (
