@@ -8,7 +8,6 @@ function MealCard({strMeal, strMealThumb, strInstructions, idMeal}) {
             <Card.Img variant="top" src={strMealThumb}/>
             <Card.Body>
                 <Card.Title>{ strMeal }</Card.Title>
-                {/*<Button variant="primary">See More</Button>*/}
                 <MealModal title={strMeal} description={strInstructions} idMeal={idMeal}/>
             </Card.Body>
         </Card>

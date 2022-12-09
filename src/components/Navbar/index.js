@@ -49,13 +49,12 @@ function AppNavbar() {
                         )}
                         {user && (
                             <Nav>
-                                <LinkContainer to="/my-favorites">
-                                    <Nav.Link>Favorites</Nav.Link>
+                                <LinkContainer to="/profile">
+                                    <Nav.Link>Profile</Nav.Link>
                                 </LinkContainer>
                                 <LinkContainer to="/">
                                     <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                                 </LinkContainer>
-                                {/*<Nav.Link onClick={handleLogout}>Logout</Nav.Link>*/}
                             </Nav>
                         )}
                     </Navbar.Collapse>
