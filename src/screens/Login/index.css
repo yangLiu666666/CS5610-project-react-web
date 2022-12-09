@@ -1,0 +1,12 @@
+.login-bg-container {
+    background-image: url('https://hips.hearstapps.com/hmg-prod/images/hand-time-photo-1x1-1636742333.jpg?crop=1xw:1xh;center,top&resize=1200:*');
+    background-size: cover;
+    background-position: center;
+    height: 80vh;
+}
+
+.login-form {
+    width: 90%;
+    margin: 0 auto;
+
+}
