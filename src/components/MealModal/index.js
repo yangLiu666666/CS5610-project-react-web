@@ -17,6 +17,7 @@ function MealModal({title, description, idMeal}) {
     const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState(false);
     const [comment, setComment] = useState('');
+    const [profile, setProfile] = useState([]);
     const handleClose = () => setShow(false);
     const handleShow = () => {
 
@@ -60,6 +61,9 @@ function MealModal({title, description, idMeal}) {
         addNewComment(idMeal, comment)
             .then((data) => {
                 setComments(data.comment);
+            }).then((comment) => {
+            // window.location.reload();
+            setComment("")
             }).catch((error) => {
             console.log(error)
         })
@@ -132,7 +136,6 @@ function MealModal({title, description, idMeal}) {
                 <Modal.Footer>
                     {user && (
                      <div>
-
                          <Button variant="primary" onClick={handleAddComment}>
                              Make a Comment
                          </Button>

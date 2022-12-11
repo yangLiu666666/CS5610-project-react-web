@@ -60,6 +60,7 @@ const ProfileComponent = ({profile, setEditProfile}) =>{
         if (user) {
             const uid = params.uid;
             navigate(`/profile/${uid}/edit`);
+            //wrong
             user.name = profile.name;
             user.country = profile.country;
         }

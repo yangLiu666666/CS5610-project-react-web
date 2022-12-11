@@ -16,6 +16,7 @@ import EditProfile from "./screens/Profile/EditProfile";
 import {Provider} from "react-redux";
 import {configureStore} from "@reduxjs/toolkit";
 import profileSlice from "./redux/profile-reducer";
+import Admin from "./screens/Admin/Admin";
 
 function App() {
     const {user, setUser, meals, setMeals} = useContext(MyContext);
@@ -48,6 +49,7 @@ function App() {
             <AppNavbar />
                 <Routes>
                     <Route path="/" element={<Home />}/>
+                    <Route path="/admin" element={<Admin />}/>
                     {!user && (
                         <>
                             <Route path="/login" element={<Login />}/>
