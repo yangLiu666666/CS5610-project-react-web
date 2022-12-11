@@ -1,11 +1,15 @@
 import React, {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
+import {Link, useNavigate} from "react-router-dom";
+import {useParams} from "react-router";
 import {editProfile} from "../../redux/profile-reducer";
 
-const EditProfileComponent = ({profile, setEditProfile}) => {
+const EditProfile = ({profile, setEditProfile}) => {
     const dispatch = useDispatch();
-    const [name, setName] = useState(profile.name);
-    const [country, setCountry] = useState(profile.country);
+    const navigate = useNavigate();
+    const [name, setName] = useState('');
+    const [country, setCountry] = useState('');
+    const params = useParams();
 
     const saveProfileHandler = () => {
         const newProfile = {
@@ -17,11 +21,17 @@ const EditProfileComponent = ({profile, setEditProfile}) => {
         setEditProfile(false);
     }
 
+    const handleBack = () => {
+        const uid = params.uid;
+        navigate(`/profile/${uid}`);
+        setEditProfile(false);
+    }
+
     return (
-        <>
+        <div>
             <div className="row align-items-center ">
-                <div className="col-1" onClick={() => setEditProfile(false)}>
-                    <i className="bi bi-x-lg"/>
+                <div className="col-1" onClick={handleBack}>
+                    <Link to={`./`} className="bi bi-x-lg"/>
                 </div>
                 <div className="col-9 ps-0 fw-bold fs-5">
                     Edit Profile
@@ -31,9 +41,7 @@ const EditProfileComponent = ({profile, setEditProfile}) => {
                 </button>
             </div>
             <div className="row position-relative mt-2">
-                <img src={profile.bannerPicture} className="img-fluid" style={{height:"300px"}}/>
-                <img src={profile.profilePicture} className="img-fluid col-lg-3 col-sm-4 ms-4 rounded-circle position-absolute" style={{bottom:"-50px"}}/>
-
+                <div className="jumbotron" style={{height:"300px"}}/>
             </div>
             <div className="row pt-5 mt-2"/>
             <div className="row mt-2 p-2 border border-light rounded">
@@ -53,8 +61,7 @@ const EditProfileComponent = ({profile, setEditProfile}) => {
                        className="form-control"
                        value={country}/>
             </div>
-        </>
+        </div>
     )
 }
-
-export default EditProfileComponent;
+export default EditProfile;

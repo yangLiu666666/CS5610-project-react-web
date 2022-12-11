@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import profileInfo from "./profile.json";
 
 const profileSlice = createSlice({
     name: "profile",
-    initialState: profileInfo,
+    initialState: {},
     reducers: {
         editProfile(state, action) {
             Object.assign(state, action.payload)

@@ -2,9 +2,7 @@ import React, {useContext} from 'react';
 import {Container, Nav, Navbar} from "react-bootstrap";
 import { LinkContainer } from 'react-router-bootstrap';
 import {MyContext} from "../../context";
-import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import httpClient from "../../Axios"
 import {logout} from "../../services/userServices";
 
 function AppNavbar() {

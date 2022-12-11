@@ -1,16 +1,13 @@
 import React, {useContext, useState} from 'react';
 import "./index.css";
 import {InputGroup, Form, Button} from "react-bootstrap";
-import {MyContext} from "../../context";
 
 function MyJumbotron() {
     const [searchInput, setSearchInput] = useState("");
-    const [searchResult, setSearchResult] = useState([]);
-    // const {setMeals} = useContext(MyContext);
     function handleSearch() {
         fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInput}`)
             .then((res) => res.json())
-            .then((data) => {setSearchResult(data.meals)});
+            .then((data) => {setSearchInput(data.meals)});
     }
 
     return (
