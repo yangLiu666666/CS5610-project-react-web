@@ -1,86 +1,159 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {MyContext} from "../../context";
-// import axios from "axios";
-import httpClient from "../../Axios";
+import {userLikeMealById, userRemoveLikeById } from "../../services/likeServices";
+import {isLike} from "../../utilities";
+import {addNewComment, deleteCommentByID, findCommentsByMeal} from "../../services/commentServices";
+import Form from 'react-bootstrap/Form';
+import {ListGroup} from "react-bootstrap";
 
 function MealModal({title, description, idMeal}) {
     const [show, setShow] = useState(false);
-    const {user, setUser} = useContext(MyContext)
+    const {user, meals, setMeals} = useContext(MyContext)
+    const [like, setLike] = useState(false);
+    const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [comment, setComment] = useState('');
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const handleAddToFavorites = () => {
-        console.log("mealId", idMeal);
-        setLoading(true);
-        // axios.post('http://localhost:4000/add-favorites', {mealId: idMeal})
-        //     .then((res)=>console.log(res))
-        //     .catch((error) => console.log(error))
-        httpClient.post('/add-favorites', {mealId: idMeal})
-            .then(({data}) => {
+    const handleAddToLikes = () => {
+        setLoading(true)
+        userLikeMealById(idMeal)
+            .then((data) => {
                 setLoading(false);
-                setUser(data)
-                alert("Meal Added To Favorites")
-            })
-            .catch((error) => {
+                meals.push(data)
+                setMeals(meals)
+                setLike(true)
+                alert("Meal Added To Likes")
+            }).catch((error) => {
                 setLoading(false);
                 console.log(error)
             })
     }
 
-    const handleRemoveFromFavorites = () => {
-        setLoading(true);
-        // axios.post('http://localhost:4000/add-favorites', {mealId: idMeal})
-        //     .then((res)=>console.log(res))
-        //     .catch((error) => console.log(error))
-        httpClient.post('/remove-favorites', {mealId: idMeal})
-            .then(({data}) => {
+    const handleRemoveFromLikes = () => {
+        setLoading(true)
+        userRemoveLikeById(idMeal)
+            .then((data) => {
                 setLoading(false);
-                setUser(data)
-                alert("Meal Removed From Favorites")
-            })
-            .catch((error) => {
-                setLoading(false);
-                console.log(error)
-            })
+                const newMeals = meals.filter((m) => {
+                    return m.mealId !== idMeal
+                })
+                setMeals(newMeals)
+                setLike(false)
+                alert("Meal Removed From Likes")
+            }).catch((error) => {
+            setLoading(false);
+            console.log(error)
+        })
     }
+
+    const handleAddComment = () => {
+        //all elements of meal
+        addNewComment(idMeal, comment)
+            .then((data) => {
+                setComments(data.comment);
+            }).catch((error) => {
+            console.log(error)
+        })
+    }
+
+
+    const handleRemoveComment = () => {
+        deleteCommentByID(idMeal, comment._id)
+            .then((data) => {
+                const newMeals = meals.filter((m) => {
+                    return m.mealId !== idMeal
+                })
+                setMeals(newMeals)
+                //need to delete the comment
+                setComment(null);
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
+
+    useEffect(()=> {
+        if(isLike(meals, idMeal)){
+            setLike(true);
+        }
+    },[meals, idMeal])
+
+// only first time render
+    useEffect(() => {
+        findCommentsByMeal(idMeal)
+            .then((data) => {
+                if (data[0].comment) {
+                    setComments(data[0].comment)
+                }
+            })
+    },[idMeal])
+
     return (
         <>
             <Button variant="primary" onClick={handleShow}>
                 See More
             </Button>
-
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>{description}</Modal.Body>
+                <Modal.Body>{description}
+                    <div className='mt-3'>
+                    <Form.Group
+                        className="mb-3"
+                        controlId="exampleForm.ControlTextarea1">
+                        <Form.Label><b>Comments Textarea:</b></Form.Label>
+                        <Form.Control as="textarea" rows={3} onChange={(e)=> setComment(e.target.value)} />
+                    </Form.Group>
+                    </div>
+                    <div>
+                        <Form.Label><b>Comments:</b></Form.Label>
+                        {comments.map((comment) =>
+                                <ListGroup>
+                                    <ListGroup.Item>
+                                        {comment.name}: {comment.content} -- {comment.date}
+                                        {/*<Button onClick={handleRemoveComment}>Delete comment</Button>*/}
+                                    </ListGroup.Item>
+                                </ListGroup>
+                            // <p>{comment.content}</p>
+                        )}
+                    </div>
+                </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
                     {user && (
-                        <>
-                        {user.favorites.includes(idMeal) ? (
+                     <div>
+
+                         <Button variant="primary" onClick={handleAddComment}>
+                             Make a Comment
+                         </Button>
+                     </div>
+                    )}
+                    {user && (
+                        <div>
+                        {like ? (
                                 <Button variant="danger"
-                                        onClick={handleRemoveFromFavorites}
+                                        onClick={handleRemoveFromLikes}
                                         disabled={loading}>
-                                    Remove From Favorites
+                                    Remove From Likes
                                 </Button>
                             ) : (
                                 <Button variant="primary"
-                                        onClick={handleAddToFavorites}
+                                        onClick={handleAddToLikes}
                                         disabled={loading}>
-                                    Add To Favorites
+                                    Add To Likes
                                 </Button>)
                         }
-                        </>
+                        </div>
                     )}
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
                 </Modal.Footer>
             </Modal>
         </>
     )
-
 }
 export default MealModal;

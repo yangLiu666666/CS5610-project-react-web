@@ -1,25 +1,27 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import React, {useContext, useState} from 'react';
-// import axios from "axios";
 import {MyContext} from "../../context";
-import {Link, useNavigate} from "react-router-dom";
-import httpClient from "../../Axios";
+import { useNavigate } from "react-router-dom";
 import {Col, Container, Row} from "react-bootstrap";
+import {register} from "../../services/userServices";
 function Register() {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+    const [country, setCountry] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
     const {setUser} = useContext(MyContext);
+
     function handleRegister(e) {
         e.preventDefault();
         //If email or password doesn't exist
-        if (!email || !password) {
+        if (!email || !password ||!name) {
             return alert('Please filled out the fields');
         }
-        httpClient.post('/users', {email, password})
-            .then(({data}) => {
+        register(email, password, role, name, country)
+            .then((data) => {
                 setUser(data);
                 localStorage.setItem('token', data.token);
                 navigate("/");
@@ -33,10 +35,10 @@ function Register() {
                     <Form onSubmit={handleRegister} className="login-form">
                         <h1 className="text-center">Register</h1>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>Email address</Form.Label>
+                            <Form.Label>Email Address</Form.Label>
                             <Form.Control
                                 type="email"
-                                placeholder="Enter email"
+                                placeholder="Enter your email"
                                 onChange={(e) => setEmail(e.target.value)}
                                 value={email}
                                 required
@@ -44,6 +46,17 @@ function Register() {
                             <Form.Text className="text-muted">
                                 We'll never share your email with anyone else.
                             </Form.Text>
+
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Your Nickname</Form.Label>
+                            <Form.Control
+                                type="name"
+                                placeholder="Enter your name"
+                                onChange={(e) => setName(e.target.value)}
+                                value={name}
+                                required
+                            />
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -56,6 +69,18 @@ function Register() {
                                 required
                             />
                         </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Your Country</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter your country"
+                                onChange={(e) => setCountry(e.target.value)}
+                                value={country}
+                                required
+                            />
+                        </Form.Group>
+
                         <div>
                             <div className="row justify-content-center">
                                 <label>

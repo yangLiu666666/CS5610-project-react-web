@@ -10,7 +10,5 @@ function MealsContainer({meals}) {
             ))}
         </div>
     );
-
 }
 export default MealsContainer;
-// <div key={meal.idMeal}>{meal.strMeal}</div>

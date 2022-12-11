@@ -3,26 +3,33 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import AppNavbar from "./components/Navbar"
 import Home from "./screens/Home";
-import AppContext, {MyContext} from "./context";
+import {MyContext} from "./context";
 import { BrowserRouter } from "react-router-dom";
 import ErrorPage from "./screens/ErrorPage";
 import {Routes, Route} from "react-router";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
-// import axios from "axios";
 import Profile from "./screens/Profile";
 import axios from './Axios';
+import {findAllLikes} from "./services/likeServices";
 
 function App() {
-    const {user, setUser} = useContext(MyContext);
-    // useEffect(()=>{
-    //     axios.post('http://localhost:4000/auto-login')
-    //         .then(({data}) => setUser(data));
-    // }, [])
+    const {user, setUser, meals, setMeals} = useContext(MyContext);
     useEffect(()=>{
         axios.post('/auto-login')
-            .then(({data}) => setUser(data));
+            .then(({data}) => setUser(data))
     }, [])
+
+
+    useEffect(()=>{
+        if(user) {
+            console.log(user)
+            findAllLikes(user._id)
+                .then((data)=> {
+                    setMeals(data)
+                })
+        }
+    },[user])
 
   return (
       <BrowserRouter>
@@ -37,11 +44,12 @@ function App() {
                     )}
                     {user && (
                         <>
-                        <Route path="/profile" element={<Profile />}/>
+                        <Route path="/profile/:uid" element={<Profile />}/>
                         </>
                         )}
+                    <Route path="*" element={<ErrorPage />}/>
                 </Routes>
       </BrowserRouter>
   );
-}
+};
 export default App;

@@ -5,22 +5,14 @@ import {MyContext} from "../../context";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import httpClient from "../../Axios"
+import {logout} from "../../services/userServices";
 
 function AppNavbar() {
     const navigate = useNavigate();
     const {user, setUser} = useContext(MyContext);
 
-    // have some problems
-    // const handleLogout = ()=>{
-    //     axios.post('http://localhost:4000/logout')
-    //         .then(({data}) => {
-    //             localStorage.removeItem("token");
-    //             setUser(null);
-    //             navigate("/");
-    //     })
-    // }
     const handleLogout = ()=>{
-        httpClient.post('/logout')
+        logout()
             .then(() => {
                 localStorage.removeItem("token");
                 setUser(null);
@@ -49,7 +41,7 @@ function AppNavbar() {
                         )}
                         {user && (
                             <Nav>
-                                <LinkContainer to="/profile">
+                                <LinkContainer to={`/profile/${user._id}`}>
                                     <Nav.Link>Profile</Nav.Link>
                                 </LinkContainer>
                                 <LinkContainer to="/">
