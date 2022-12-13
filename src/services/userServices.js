@@ -4,7 +4,7 @@ export const register = (email, password, role, name, country) => {
     return httpClient.post('/users', {email, password, role, name, country})
         .then((resp)=>resp.data)
 }
-export const login = (email, password) => {
+export const login = (email, password, role) => {
     return httpClient.post('/login', {email, password})
         .then((resp)=>resp.data)
 }
@@ -48,3 +48,12 @@ export const findCommentById = (uid) => {
         .then((resp) => resp.data)
 }
 
+export const deleteUserById = (uid) => {
+    return httpClient.delete(`/users/${uid}`)
+        .then((resp) => resp.data)
+}
+
+export const findAllUsers = () => {
+    return httpClient.get(`/users`)
+        .then((resp) => resp.data)
+}
