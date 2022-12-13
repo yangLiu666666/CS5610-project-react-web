@@ -13,7 +13,7 @@ function AppNavbar() {
         logout()
             .then(() => {
                 localStorage.removeItem("token");
-                setUser(null);
+                setUser('');
                 navigate("/");
             })
     }

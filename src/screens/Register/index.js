@@ -22,12 +22,19 @@ function Register() {
         }
         register(email, password, role, name, country)
             .then((data) => {
-                setUser(data);
-                localStorage.setItem('token', data.token);
-                navigate("/");
+                if (data.role === '' || data.role === 'premium') {
+                    setUser(data);
+                    localStorage.setItem('token', data.token);
+                    navigate("/");
+                } else if (data.role === 'admin'){
+                    setUser(data);
+                    localStorage.setItem('token', data.token);
+                    navigate("/admin");
+                }
             })
             .catch((error)=>console.log(error));
     }
+
     return (
         <Container>
             <Row>

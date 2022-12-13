@@ -12,8 +12,6 @@ import {
 import {useParams} from "react-router";
 import FollowComponent from "./FollowComponent";
 import {ListGroup} from "react-bootstrap";
-import Modal from "react-bootstrap/Modal";
-import {useSelector} from "react-redux";
 
 const ProfileComponent = ({profile, setEditProfile}) =>{
     const navigate = useNavigate();

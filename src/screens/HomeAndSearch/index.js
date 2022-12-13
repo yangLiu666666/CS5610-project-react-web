@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import MyJumbotron from "../../components/Jumbotron";
 import MealsContainer from "../../components/MealsContainer";
 import {Button, Form, InputGroup} from "react-bootstrap";
+import {MyContext} from "../../context";
 
 function Home() {
     const [searchInput, setSearchInput] = useState("");
@@ -10,7 +11,7 @@ function Home() {
         fetch('https://www.themealdb.com/api/json/v1/1/search.php?f=b')
             .then((res) => res.json())
             .then((data) => {setSearchResult(data.meals)})
-            .catch((error) => console.log(error));
+            .catch((error) => console.log(error))
 
     },[])
 

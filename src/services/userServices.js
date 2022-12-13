@@ -43,4 +43,8 @@ export const userARemoveFollowUserB = (uidA, uidB) => {
         .then((resp) => resp.data)
 }
 
+export const findCommentById = (uid) => {
+    return httpClient.get(`/users/${uid}/comments`)
+        .then((resp) => resp.data)
+}
 

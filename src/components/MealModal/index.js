@@ -4,23 +4,25 @@ import Modal from 'react-bootstrap/Modal';
 import {MyContext} from "../../context";
 import {userLikeMealById, userRemoveLikeById } from "../../services/likeServices";
 import {isLike} from "../../utilities";
-import {addNewComment, deleteCommentByID, findCommentsByMeal} from "../../services/commentServices";
+import {
+    addNewComment,
+    deleteCommentByID,
+    findCommentsByMeal
+} from "../../services/commentServices";
 import Form from 'react-bootstrap/Form';
 import {ListGroup} from "react-bootstrap";
-import {useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
+import {findCommentById} from "../../services/userServices";
 
 function MealModal({title, description, idMeal}) {
-    const navigate = useNavigate();
     const [show, setShow] = useState(false);
-    const {user, meals, setMeals} = useContext(MyContext)
+    const {user, setUsers, meals, setMeals} = useContext(MyContext)
     const [like, setLike] = useState(false);
     const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState(false);
     const [comment, setComment] = useState('');
-    const [profile, setProfile] = useState([]);
     const handleClose = () => setShow(false);
     const handleShow = () => {
-
         setShow(true)
         // navigate(`/details/${meals._id}`)
     };
@@ -84,7 +86,6 @@ function MealModal({title, description, idMeal}) {
         })
     }
 
-
     useEffect(()=> {
         if(isLike(meals, idMeal)){
             setLike(true);
@@ -111,7 +112,7 @@ function MealModal({title, description, idMeal}) {
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>{description}
-                    {user &&
+                    {user.role &&
                     <div className='mt-3'>
                     <Form.Group
                         className="mb-3"
@@ -126,7 +127,8 @@ function MealModal({title, description, idMeal}) {
                         {comments.map((comment) =>
                                 <ListGroup>
                                     <ListGroup.Item>
-                                        {comment.name}: {comment.content} -- {comment.date}
+                                        <Link to={`/profile/${comment.uid}`}>{comment.name} </Link>
+                                        : {comment.content} -- {comment.date}
                                         {/*<Button onClick={handleRemoveComment}>Delete comment</Button>*/}
                                     </ListGroup.Item>
                                 </ListGroup>
